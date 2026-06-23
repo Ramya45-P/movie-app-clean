@@ -1,0 +1,42 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.database.db import Base, engine
+
+# Models (ensure they are imported)
+from app.models.user import User
+from app.models.movie import Movie
+from app.models.review import Review
+from app.models.favorite import Favorite
+
+# Routers
+from app.routers import movies, recommendations, favorites, auth
+
+app = FastAPI(
+    title="Movie App API",
+    version="1.0.0"
+)
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# CREATE TABLES ON STARTUP (FIX)
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
+
+# Routers
+app.include_router(movies.router)
+app.include_router(favorites.router)
+app.include_router(recommendations.router)
+app.include_router(auth.router)
+
+@app.get("/")
+def home():
+    return {"message": "Movie API is running successfully"}

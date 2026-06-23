@@ -1,0 +1,20 @@
+.movie-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 20px;
+}
+
+.movie-card {
+  border-radius: 12px;
+  padding: 15px;
+  background: #fff;
+}
+
+.movie-card button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
