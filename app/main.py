@@ -8,9 +8,15 @@ from app.models.user import User
 from app.models.movie import Movie
 from app.models.review import Review
 from app.models.favorite import Favorite
+from app.models.search_history import SearchHistory
+from app.models.notification import Notification  
 
 # Routers
-from app.routers import movies, recommendations, favorites, auth
+import app.routers.movies as movies
+import app.routers.recommendations as recommendations
+import app.routers.favorites as favorites
+import app.routers.auth as auth
+import app.routers.notifications as notifications
 
 app = FastAPI(
     title="Movie App API",
@@ -30,16 +36,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# CREATE TABLES ON STARTUP (FIX)
+
+# CREATE TABLES ON STARTUP
 @app.on_event("startup")
 def startup():
+    print("========== CREATING TABLES ==========")
     Base.metadata.create_all(bind=engine)
+    print("========== TABLES CREATED ==========")
 
 # Routers
 app.include_router(movies.router)
 app.include_router(favorites.router)
 app.include_router(recommendations.router)
 app.include_router(auth.router)
+app.include_router(notifications.router)
 
 @app.get("/")
 def home():

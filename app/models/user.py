@@ -18,6 +18,8 @@ class User(Base):
 
     password = Column(String, nullable=False)
 
+    role = Column(String, default="user")
+
     searches = relationship(
         "SearchHistory",
         back_populates="user"
@@ -26,4 +28,11 @@ class User(Base):
     reviews = relationship(
         "Review",
         back_populates="user"
+    )
+
+    # NEW
+    notifications = relationship(
+        "Notification",
+        back_populates="user",
+        cascade="all, delete-orphan"
     )

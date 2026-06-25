@@ -24,13 +24,20 @@ function Login() {
 
       const data = await loginUser(email, password);
 
-      localStorage.setItem("token", data.access_token);
+alert("Response: " + JSON.stringify(data));
 
-      alert("Login successful!");
+localStorage.setItem("token", data.access_token);
 
-      navigate("/");
+alert("Token saved");
+
+navigate("/");
+
+alert("Navigate executed");
     } catch (err) {
-      console.error(err);
+      console.log(err);
+
+      alert(JSON.stringify(err.response?.data));
+
       setError(err.response?.data?.detail || "Login failed");
     } finally {
       setLoading(false);

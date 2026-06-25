@@ -1,37 +1,29 @@
-print("RECOMMENDATIONS ROUTE LOADED")
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from collections import Counter
 
-from app.database.db import SessionLocal
-from app.models.movie import Movie
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.database.db import get_db
 from app.models.favorite import Favorite
+from app.models.movie import Movie
+from app.models.notification import Notification
+from app.schemas.movie_schema import MovieResponse
 
 router = APIRouter(
     prefix="/recommendations",
     tags=["Recommendations"]
- )
+)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
-@router.get("/")
+@router.get("/", response_model=list[MovieResponse])
 def get_recommendations(db: Session = Depends(get_db)):
 
     favorites = db.query(Favorite).all()
 
     if not favorites:
-        return {
-            "recommended_movies": [],
-            "message": "Start adding favorites to get recommendations"
-        }
+        return []
 
     genres = [fav.genre for fav in favorites]
-
     favorite_genre = Counter(genres).most_common(1)[0][0]
 
     recommendations = (
@@ -40,6 +32,13 @@ def get_recommendations(db: Session = Depends(get_db)):
         .all()
     )
 
-    return {
-        "recommended_movies": recommendations
-    }
+    notification = Notification(
+        user_id=1,
+        type="recommendation",
+        message=f"New recommendations are available based on your favorite {favorite_genre} movies."
+    )
+
+    db.add(notification)
+    db.commit()
+
+    return recommendations
