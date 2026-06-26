@@ -26,31 +26,12 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-   allow_origins=[
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "https://movie-app-clean-lkmwomqbq-ramya8.vercel.app",
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://movie-app-clean-lkmwomqbq-ramya8.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-   ]
 )
-
-
-# CREATE TABLES ON STARTUP
-@app.on_event("startup")
-def startup():
-    print("========== CREATING TABLES ==========")
-    Base.metadata.create_all(bind=engine)
-    print("========== TABLES CREATED ==========")
-
-# Routers
-app.include_router(movies.router)
-app.include_router(favorites.router)
-app.include_router(recommendations.router)
-app.include_router(auth.router)
-app.include_router(notifications.router)
-
-@app.get("/")
-def home():
-    return {"message": "Movie API is running successfully"}
