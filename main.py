@@ -26,11 +26,11 @@ Base.metadata.create_all(bind=engine)
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "https://movie-app-clean-ten.vercel.app",
-    ],
+   allow_origins=[
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://movie-app-clean-lkmwomqbq-ramya8.vercel.app",
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
