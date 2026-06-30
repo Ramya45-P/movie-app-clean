@@ -1,10 +1,14 @@
 import API from "../api/axios";
 
-export const loginUser = async (email, password) => {
-  const { data } = await API.post("/login", {
-    email,
-    password,
-  });
+export const loginUser = (email, password) => {
+  const formData = new URLSearchParams();
 
-  return data;
+  formData.append("username", email);   // 👈 IMPORTANT
+  formData.append("password", password);
+
+  return API.post("/login", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
 };

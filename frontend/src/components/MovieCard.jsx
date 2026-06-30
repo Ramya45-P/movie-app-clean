@@ -6,7 +6,6 @@ function MovieCard({
   onCompare,
   selectedMovies = []
 }) {
-
   const handleFavorite = async () => {
     try {
       await addFavorite(movie);

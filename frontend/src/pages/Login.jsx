@@ -34,12 +34,18 @@ navigate("/");
 
 alert("Navigate executed");
     } catch (err) {
-      console.log(err);
+  console.log(err);
 
-      alert(JSON.stringify(err.response?.data));
+  const msg =
+    err.response?.data?.detail ||
+    err.response?.data?.message ||
+    err.response?.data ||
+    "Login failed";
 
-      setError(err.response?.data?.detail || "Login failed");
-    } finally {
+  alert(typeof msg === "string" ? msg : JSON.stringify(msg));
+
+  setError(typeof msg === "string" ? msg : "Login failed");
+} finally {
       setLoading(false);
     }
   };
