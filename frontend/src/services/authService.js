@@ -2,8 +2,7 @@ import API from "../api/axios";
 
 export const loginUser = (email, password) => {
   const formData = new URLSearchParams();
-
-  formData.append("username", email);   // 👈 IMPORTANT
+  formData.append("username", email);   // FastAPI expects "username"
   formData.append("password", password);
 
   return API.post("/login", formData, {

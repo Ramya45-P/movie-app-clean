@@ -26,8 +26,12 @@ function Login() {
     try {
       const data = await loginUser(email, password);
 
+      console.log("FULL RESPONSE:", data);
+      console.log("TOKEN:", data.data?.access_token);
+
+
       // ✅ use context instead of localStorage
-      login(data.access_token);
+      login(data.data.access_token);
 
       console.log("Login successful");
 

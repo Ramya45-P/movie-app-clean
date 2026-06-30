@@ -33,18 +33,17 @@ alert("Token saved");
 navigate("/");
 
 alert("Navigate executed");
-    } catch (err) {
+   } catch (err) {
   console.log(err);
 
   const msg =
     err.response?.data?.detail ||
     err.response?.data?.message ||
-    err.response?.data ||
+    JSON.stringify(err.response?.data) ||
     "Login failed";
 
-  alert(typeof msg === "string" ? msg : JSON.stringify(msg));
-
-  setError(typeof msg === "string" ? msg : "Login failed");
+  setError(msg);
+  alert(msg);
 } finally {
       setLoading(false);
     }
