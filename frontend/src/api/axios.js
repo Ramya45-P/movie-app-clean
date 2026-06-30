@@ -8,7 +8,10 @@ const API = axios.create({
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
-  config.headers["Content-Type"] = "application/json";
+  // Don't override Content-Type if it's already set
+  if (!config.headers["Content-Type"]) {
+    config.headers["Content-Type"] = "application/json";
+  }
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

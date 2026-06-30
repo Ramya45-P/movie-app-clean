@@ -5,7 +5,7 @@ export const loginUser = (email, password) => {
   formData.append("username", email);
   formData.append("password", password);
 
-  return API.post("/login", formData, {
+  return API.post("auth/login", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },

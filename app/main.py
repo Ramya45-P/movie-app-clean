@@ -27,9 +27,12 @@ app.add_middleware(
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3004",
+
+        "https://movie-app-clean-5zbe.vercel.app",   # <-- ADD THIS
+
         "https://movie-app-clean-0o52.onrender.com",
         "https://movie-app-clean.vercel.app",
-        "https://movie-app-clean-git-master-ramya8.vercel.app"
+        "https://movie-app-clean-git-master-ramya8.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
