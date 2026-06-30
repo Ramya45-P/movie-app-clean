@@ -19,8 +19,13 @@ function CompareMovies() {
 
         setData(res.data);
       } catch (err) {
-        console.log(err);
-      }
+  console.log("Error:", err);
+
+  if (err.response) {
+    console.log("Status:", err.response.status);
+    console.log("Data:", err.response.data);
+  }
+}
     };
 
     fetchComparison();
