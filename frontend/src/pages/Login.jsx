@@ -28,13 +28,17 @@ function Login() {
       console.log("LOGIN RESPONSE:", response);
 
       // IMPORTANT: axios returns {data}
-      const token = response.data?.access_token;
+    const token = response?.data?.access_token;
 
-      if (!token) {
-        throw new Error("Token not found in response");
-      }
+console.log("TOKEN DEBUG:", token);
+console.log("FULL RESPONSE:", response);
 
-      localStorage.setItem("token", token);
+if (!token) {
+  console.log("Backend response issue:", response?.data);
+  throw new Error("Login failed: token missing");
+}
+
+localStorage.setItem("token", token);
 
       navigate("/");
 
