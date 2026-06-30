@@ -1,7 +1,12 @@
 import React from "react";
 import { addFavorite } from "../services/favorites";
 
-function MovieCard({ movie }) {
+function MovieCard({
+  movie,
+  onCompare,
+  selectedMovies = []
+}) {
+
   const handleFavorite = async () => {
     try {
       await addFavorite(movie);
@@ -12,10 +17,12 @@ function MovieCard({ movie }) {
     }
   };
 
+  const isSelected = selectedMovies.includes(movie.id);
+
   return (
     <div
       style={{
-        border: "1px solid #ccc",
+        border: isSelected ? "3px solid green" : "1px solid #ccc",
         borderRadius: "8px",
         padding: "15px",
         width: "250px",
@@ -32,11 +39,21 @@ function MovieCard({ movie }) {
       </p>
 
       <p>
-        <strong>Rating:</strong> ⭐ {movie.rating}
+        <strong>IMDb Rating:</strong> ⭐ {movie.rating}
       </p>
 
       <button onClick={handleFavorite}>
         ❤️ Add to Favorites
+      </button>
+
+      <br />
+      <br />
+
+      <button
+        onClick={() => onCompare(movie)}
+        disabled={isSelected}
+      >
+        Compare
       </button>
     </div>
   );

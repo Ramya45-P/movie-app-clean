@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 
 from app.database.db import get_db
 from app.models.movie import Movie
+from app.models.review import Review
 from app.security import get_current_user
 from app.schemas.movie_schema import (
     MovieCreate,
@@ -44,6 +46,52 @@ def get_movies(
     current_user: str = Depends(get_current_user)
 ):
     return db.query(Movie).all()
+
+# -------------------------
+# COMPARE MOVIES
+# -------------------------
+@router.get("/compare")
+def compare_movies(
+    movie1: int,
+    movie2: int,
+    db: Session = Depends(get_db)
+):
+    movie_one = db.query(Movie).filter(Movie.id == movie1).first()
+    movie_two = db.query(Movie).filter(Movie.id == movie2).first()
+
+    if not movie_one or not movie_two:
+        raise HTTPException(
+            status_code=404,
+            detail="One or both movies not found"
+        )
+
+    def get_movie_details(movie):
+        average_rating = (
+            db.query(func.avg(Review.rating))
+            .filter(Review.movie_id == movie.id)
+            .scalar()
+        )
+
+        total_reviews = (
+            db.query(func.count(Review.id))
+            .filter(Review.movie_id == movie.id)
+            .scalar()
+        )
+
+        return {
+            "id": movie.id,
+            "title": movie.title,
+            "description": movie.description,
+            "genre": movie.genre,
+            "imdb_rating": movie.rating,
+            "average_user_rating": round(float(average_rating), 2) if average_rating else 0,
+            "total_reviews": total_reviews,
+        }
+
+    return {
+        "movie1": get_movie_details(movie_one),
+        "movie2": get_movie_details(movie_two)
+    }    
 
 
 # -------------------------
@@ -107,6 +155,8 @@ def bulk_update_movies(
         "updated_count": updated_count,
         "not_found_ids": not_found_ids
     }
+
+
 
 
 # -------------------------
