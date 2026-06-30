@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# Database
 from app.database.db import Base, engine
 
 # Models
@@ -10,38 +11,49 @@ from app.models.review import Review
 from app.models.favorite import Favorite
 
 # Routers
-from app.routers import movies, auth, favorites, recommendations
-
-app = FastAPI(
-    title="Movie App API",
-    version="1.0.0",
-    swagger_ui_parameters={
-        "persistAuthorization": True
-    }
-)
+from app.routers.auth import router as auth_router
+from app.routers.movies import router as movie_router
+from app.routers.favorites import router as favorite_router
+from app.routers.recommendations import router as recommendation_router
+from app.routers.notifications import router as notification_router
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-# CORS
-app.add_middleware(
-    CORSMiddleware,
-   allow_origins=[
+app = FastAPI(
+    title="Movie App API",
+    version="1.0.0"
+)
+
+# ----------------------------
+# CORS Configuration
+# ----------------------------
+origins = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://movie-app-clean-lkmwomqbq-ramya8.vercel.app",
-],
+    "https://movie-app-clean-git-master-ramya8.vercel.app",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(movies.router)
-app.include_router(auth.router)
-app.include_router(favorites.router)
-app.include_router(recommendations.router)
+# ----------------------------
+# Routers
+# ----------------------------
+app.include_router(auth_router)
+app.include_router(movie_router)
+app.include_router(favorite_router)
+app.include_router(recommendation_router)
+app.include_router(notification_router)
 
+# ----------------------------
+# Home
+# ----------------------------
 @app.get("/")
 def home():
-    return {"message": "API running"}
+    return {"message": "Movie API is running successfully"}
