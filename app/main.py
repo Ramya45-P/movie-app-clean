@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.db import Base, engine
 
+# Models
 from app.models.user import User
 from app.models.movie import Movie
 from app.models.review import Review
@@ -10,6 +11,7 @@ from app.models.favorite import Favorite
 from app.models.search_history import SearchHistory
 from app.models.notification import Notification
 
+# Routers
 from app.routers import auth, movies, favorites, recommendations, notifications
 
 app = FastAPI(
@@ -18,14 +20,16 @@ app = FastAPI(
     swagger_ui_parameters={"persistAuthorization": True}
 )
 
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3004",
-        "https://movie-app-clean-git-master-ramya8.vercel.app",
-        "https://movie-app-clean.vercel.app"
+        "https://movie-app-clean-0o52.onrender.com",
+        "https://movie-app-clean.vercel.app",
+        "https://movie-app-clean-git-master-ramya8.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -34,8 +38,11 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup():
+    print("========== CREATING TABLES ==========")
     Base.metadata.create_all(bind=engine)
+    print("========== TABLES CREATED ==========")
 
+# Routers
 app.include_router(auth.router)
 app.include_router(movies.router)
 app.include_router(favorites.router)

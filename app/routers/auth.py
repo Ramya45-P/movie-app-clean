@@ -1,26 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordRequestForm
 
 from app.database.db import get_db
 from app.models.user import User
-from app.security import verify_password, get_password_hash, create_access_token
+from app.security import (
+    verify_password,
+    get_password_hash,
+    create_access_token
+)
 
-router = APIRouter()
+router = APIRouter(prefix="/auth", tags=["Auth"])
+
 
 # -------------------------
 # REGISTER
 # -------------------------
 @router.post("/register")
-def register(email: str, password: str, db: Session = Depends(get_db)):
+def register(
+    email: str,
+    password: str,
+    db: Session = Depends(get_db)
+):
     existing_user = db.query(User).filter(User.email == email).first()
 
     if existing_user:
-        raise HTTPException(
-            status_code=400,
-            detail="User already exists"
-        )
+        raise HTTPException(status_code=400, detail="User already exists")
 
     hashed_password = get_password_hash(password)
 
@@ -33,42 +38,28 @@ def register(email: str, password: str, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return {
-        "message": "User created successfully"
-    }
+    return {"message": "User created successfully"}
 
 
 # -------------------------
-# LOGIN (FIXED VERSION)
+# LOGIN (IMPORTANT FIX)
 # -------------------------
 @router.post("/login")
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
-
-    # IMPORTANT: username field = email in your frontend
     user = db.query(User).filter(User.email == form_data.username).first()
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials"
-        )
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     if not verify_password(form_data.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials"
-        )
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    # create JWT token
-    access_token = create_access_token(
-        data={"sub": user.email},
-        expires_delta=timedelta(days=7)
-    )
+    token = create_access_token(data={"sub": user.email})
 
     return {
-        "access_token": access_token,
+        "access_token": token,
         "token_type": "bearer"
     }

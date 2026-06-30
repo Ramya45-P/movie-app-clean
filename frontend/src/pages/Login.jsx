@@ -13,105 +13,74 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    setError("");
+
     if (!email || !password) {
-      setError("Please enter both email and password.");
+      setError("Email and password required");
       return;
     }
 
     try {
       setLoading(true);
-      setError("");
 
-      const data = await loginUser(email, password);
+      const response = await loginUser(email, password);
 
-alert("Response: " + JSON.stringify(data));
+      console.log("LOGIN RESPONSE:", response);
 
-localStorage.setItem("token", data.access_token);
+      // IMPORTANT: axios returns {data}
+      const token = response.data?.access_token;
 
-alert("Token saved");
+      if (!token) {
+        throw new Error("Token not found in response");
+      }
 
-navigate("/");
+      localStorage.setItem("token", token);
 
-alert("Navigate executed");
-   } catch (err) {
-  console.log(err);
+      navigate("/");
 
-  const msg =
-    err.response?.data?.detail ||
-    err.response?.data?.message ||
-    JSON.stringify(err.response?.data) ||
-    "Login failed";
+    } catch (err) {
+      console.log("LOGIN ERROR:", err);
 
-  setError(msg);
-  alert(msg);
-} finally {
+      const msg =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        "Login failed";
+
+      setError(msg);
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "400px",
-        margin: "50px auto",
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-      }}
-    >
-      <h2 style={{ textAlign: "center" }}>Login</h2>
+    <div style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
+      <h2>Login</h2>
 
       <form onSubmit={handleLogin}>
-        <div style={{ marginBottom: "15px" }}>
-          <label>Email</label>
-          <br />
-          <input
-            type="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-            }}
-          />
-        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Password</label>
-          <br />
-          <input
-            type="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-            }}
-          />
-        </div>
+        <br /><br />
 
-        {error && (
-          <p style={{ color: "red" }}>
-            {error}
-          </p>
-        )}
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: "100%",
-            padding: "10px",
-            cursor: "pointer",
-          }}
-        >
+        <br /><br />
+
+        <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
