@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
 
   const handleLogout = () => {
@@ -12,37 +11,23 @@ function Navbar() {
   };
 
   return (
-    <nav
-      style={{
-        padding: "10px 20px",
-        background: "#f4f4f4",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      {/* Left side */}
-      <div style={{ display: "flex", gap: "15px" }}>
+    <nav className="navbar">
+      <div className="logo">
+        🎬 Movie Explorer
+      </div>
+
+      <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/favorites">Favorites</Link>
       </div>
 
-      {/* Right side */}
       <div>
         {!token ? (
-          <Link to="/login">Login</Link>
+          <Link className="login-btn" to="/login">
+            Login
+          </Link>
         ) : (
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: "5px 10px",
-              cursor: "pointer",
-              background: "red",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-            }}
-          >
+          <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
         )}
