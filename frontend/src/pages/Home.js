@@ -15,6 +15,7 @@ function Home() {
       try {
         const res = await API.get("/movies/");
         setMovies(res.data);
+        console.log(res.data);
       } catch (err) {
         console.log(err);
       } finally {
@@ -51,35 +52,25 @@ function Home() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>🎬 Movie App</h1>
+    <div className="home-container">
+      <h1 className="home-title">🎬 Movie Explorer</h1>
 
-      <h3>Selected Movies: {selectedMovies.length}/2</h3>
+      <p className="selected-text">
+        Selected Movies: <strong>{selectedMovies.length}/2</strong>
+      </p>
 
       {selectedMovies.length === 2 && (
-        <button
-          onClick={compareNow}
-          style={{
-            marginBottom: "20px",
-            padding: "10px 20px",
-          }}
-        >
-          Compare Now
+        <button className="compare-now-btn" onClick={compareNow}>
+          🚀 Compare Now
         </button>
       )}
 
       {loading ? (
-        <p>Loading movies...</p>
+        <h2>Loading movies...</h2>
       ) : movies.length === 0 ? (
-        <p>No movies found</p>
+        <h2>No movies found</h2>
       ) : (
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="movies-grid">
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}

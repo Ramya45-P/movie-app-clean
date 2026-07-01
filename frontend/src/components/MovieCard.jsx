@@ -1,11 +1,7 @@
 import React from "react";
 import { addFavorite } from "../services/favorites";
 
-function MovieCard({
-  movie,
-  onCompare,
-  selectedMovies = []
-}) {
+function MovieCard({ movie, onCompare, selectedMovies = [] }) {
   const handleFavorite = async () => {
     try {
       await addFavorite(movie);
@@ -19,41 +15,39 @@ function MovieCard({
   const isSelected = selectedMovies.includes(movie.id);
 
   return (
-    <div
-      style={{
-        border: isSelected ? "3px solid green" : "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "15px",
-        width: "250px",
-      }}
-    >
-      <h3>{movie.title}</h3>
+    <div className={`movie-card ${isSelected ? "selected-card" : ""}`}>
+      <div className="movie-header">
+        <h2>{movie.title}</h2>
+      </div>
 
-      <p>
-        <strong>Description:</strong> {movie.description}
-      </p>
+      <div className="movie-details">
+        <p>
+          <strong>📝 Description:</strong>
+        </p>
+        <p>{movie.description}</p>
 
-      <p>
-        <strong>Genre:</strong> {movie.genre}
-      </p>
+        <p>
+          <strong>🎭 Genre:</strong> {movie.genre}
+        </p>
 
-      <p>
-        <strong>IMDb Rating:</strong> ⭐ {movie.rating}
-      </p>
+        <p>
+          <strong>⭐ IMDb Rating:</strong> {movie.rating}
+        </p>
+      </div>
 
-      <button onClick={handleFavorite}>
-        ❤️ Add to Favorites
-      </button>
+      <div className="movie-buttons">
+        <button className="favorite-btn" onClick={handleFavorite}>
+          ❤️ Add to Favorites
+        </button>
 
-      <br />
-      <br />
-
-      <button
-        onClick={() => onCompare(movie)}
-        disabled={isSelected}
-      >
-        Compare
-      </button>
+        <button
+          className="compare-btn"
+          onClick={() => onCompare(movie)}
+          disabled={isSelected}
+        >
+          {isSelected ? "✅ Selected" : "🔄 Compare"}
+        </button>
+      </div>
     </div>
   );
 }

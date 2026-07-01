@@ -23,7 +23,7 @@ function Favorites() {
   const handleRemove = async (id) => {
     try {
       await removeFavorite(id);
-      loadFavorites(); // Refresh the list
+      loadFavorites();
     } catch (err) {
       console.log(err);
       alert("Failed to remove favorite");
@@ -31,48 +31,26 @@ function Favorites() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>❤️ My Favorites</h2>
+    <div className="favorites-container">
+      <h1 className="favorites-title">❤️ My Favorites</h1>
 
       {favorites.length === 0 ? (
-        <p>No favorite movies yet.</p>
+        <h3 className="empty-text">No favorite movies yet.</h3>
       ) : (
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="favorites-grid">
           {favorites.map((movie) => (
-            <div
-              key={movie.id}
-              style={{
-                border: "1px solid #ccc",
-                padding: "15px",
-                borderRadius: "8px",
-                width: "250px",
-              }}
-            >
-              <h3>{movie.movie_title}</h3>
+            <div className="favorite-card" key={movie.id}>
+              <h2>{movie.movie_title}</h2>
 
               <p>
-                <strong>Genre:</strong> {movie.genre}
+                <strong>🎭 Genre:</strong> {movie.genre}
               </p>
 
               <button
+                className="remove-btn"
                 onClick={() => handleRemove(movie.id)}
-                style={{
-                  marginTop: "10px",
-                  background: "red",
-                  color: "white",
-                  border: "none",
-                  padding: "8px 12px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
               >
-                ❤️ Remove Favorite
+                🗑️ Remove Favorite
               </button>
             </div>
           ))}
