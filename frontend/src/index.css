@@ -1,44 +1,30 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-/* Navbar */
-
+/* =========================
+   NAVBAR
+========================= */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #111827;
   padding: 16px 40px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .logo {
   color: #facc15;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
 }
 
 .nav-links {
   display: flex;
-  gap: 25px;
+  align-items: center;
+  gap: 30px;
 }
 
 .nav-links a {
-  text-decoration: none;
   color: white;
-  font-size: 17px;
-  transition: 0.3s;
+  text-decoration: none;
+  font-size: 18px;
 }
 
 .nav-links a:hover {
@@ -47,222 +33,124 @@ code {
 
 .login-btn,
 .logout-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
   padding: 10px 18px;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
+  color: white;
   text-decoration: none;
-  font-size: 15px;
-  transition: 0.3s;
 }
 
-.login-btn:hover,
-.logout-btn:hover {
-  background: #1d4ed8;
+.login-btn {
+  background: #2563eb;
 }
 
 .logout-btn {
   background: #dc2626;
 }
 
-.logout-btn:hover {
-  background: #b91c1c;
-}
 
-@media (max-width: 768px) {
-  .navbar {
-    padding: 15px 20px;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .nav-links {
-    gap: 15px;
-  }
-
-  .logo {
-    font-size: 20px;
-  }
-}
-
-/* Movie Card */
-
-.movie-card {
-  width: 300px;
-  background: #1f2937;
-  color: white;
-  border-radius: 12px;
+/* =========================
+   MOVIE GRID
+========================= */
+.movie-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
   padding: 20px;
-  margin: 15px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* =========================
+   MOVIE CARD
+========================= */
+.movie-card {
+  background: #1f2937;
+  border-radius: 14px;
+  padding: 18px;
+  color: white;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .movie-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-6px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
+/* Selected card (Compare highlight) */
 .selected-card {
-  border: 3px solid #22c55e;
+  border: 2px solid #facc15;
 }
 
+
+/* =========================
+   MOVIE TEXT
+========================= */
 .movie-header h2 {
-  margin: 0;
-  color: #facc15;
-  font-size: 22px;
-}
-
-.movie-details {
-  margin-top: 15px;
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #f9fafb;
 }
 
 .movie-details p {
-  margin: 10px 0;
-  line-height: 1.5;
+  margin: 6px 0;
+  font-size: 14px;
+  color: #d1d5db;
+  line-height: 1.4;
 }
 
+
+/* =========================
+   BUTTONS
+========================= */
 .movie-buttons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
-.favorite-btn,
-.compare-btn {
-  border: none;
+.movie-buttons button {
+  width: 100%;
   padding: 12px;
+  border: none;
   border-radius: 8px;
-  font-size: 15px;
+  color: white;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 15px;
+  transition: 0.2s ease;
 }
 
+/* Individual buttons */
 .favorite-btn {
   background: #e11d48;
-  color: white;
 }
 
 .favorite-btn:hover {
   background: #be123c;
 }
 
-.compare-btn {
+.watchlist-btn {
   background: #2563eb;
-  color: white;
 }
 
-.compare-btn:hover {
+.watchlist-btn:hover {
   background: #1d4ed8;
 }
 
-.compare-btn:disabled {
-  background: #6b7280;
-  cursor: not-allowed;
-}
-
-/* Home Page */
-
-.home-container {
-  background: #0f172a;
-  min-height: 100vh;
-  padding: 30px;
-}
-
-.home-title {
-  text-align: center;
-  color: #facc15;
-  font-size: 42px;
-  margin-bottom: 15px;
-}
-
-.selected-text {
-  text-align: center;
-  color: white;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.compare-now-btn {
-  display: block;
-  margin: 0 auto 30px;
-  padding: 12px 30px;
-  background: #22c55e;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 17px;
-  transition: 0.3s;
-}
-
-.compare-now-btn:hover {
+.watched-btn {
   background: #16a34a;
 }
 
-.movies-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
+.watched-btn:hover {
+  background: #15803d;
 }
 
-/* Favorites */
-
-.favorites-container {
-  background: #0f172a;
-  min-height: 100vh;
-  padding: 30px;
+.compare-btn {
+  background: #7c3aed;
 }
 
-.favorites-title {
-  text-align: center;
-  color: #facc15;
-  margin-bottom: 30px;
-}
-
-.empty-text {
-  color: white;
-  text-align: center;
-}
-
-.favorites-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-}
-
-.favorite-card {
-  width: 280px;
-  background: #1f2937;
-  color: white;
-  border-radius: 12px;
-  padding: 20px;
-  transition: 0.3s;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-.favorite-card:hover {
-  transform: translateY(-6px);
-}
-
-.remove-btn {
-  width: 100%;
-  margin-top: 15px;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #dc2626;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.3s;
-}
-
-.remove-btn:hover {
-  background: #b91c1c;
+.compare-btn:hover {
+  background: #6d28d9;
 }

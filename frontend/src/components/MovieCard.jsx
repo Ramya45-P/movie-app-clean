@@ -1,5 +1,7 @@
 import React from "react";
 import { addFavorite } from "../services/favorites";
+import { addWatchlist } from "../services/watchlist";
+import { addWatched } from "../services/watched";
 
 function MovieCard({ movie, onCompare, selectedMovies = [] }) {
   const handleFavorite = async () => {
@@ -9,6 +11,26 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
     } catch (err) {
       console.log(err);
       alert("Failed to add favorite");
+    }
+  };
+
+  const handleWatchlist = async () => {
+    try {
+      await addWatchlist(movie);
+      alert("Movie added to watchlist!");
+    } catch (err) {
+      console.log(err);
+      alert("Failed to add to watchlist");
+    }
+  };
+
+  const handleWatched = async () => {
+    try {
+      await addWatched(movie);
+      alert("Movie marked as watched!");
+    } catch (err) {
+      console.log(err);
+      alert("Failed to mark as watched");
     }
   };
 
@@ -22,9 +44,8 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
 
       <div className="movie-details">
         <p>
-          <strong>📝 Description:</strong>
+          <strong>📝 Description:</strong> {movie.description}
         </p>
-        <p>{movie.description}</p>
 
         <p>
           <strong>🎭 Genre:</strong> {movie.genre}
@@ -40,12 +61,23 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
           ❤️ Add to Favorites
         </button>
 
+        <button className="watchlist-btn" onClick={handleWatchlist}>
+          ➕ Add to Watchlist
+        </button>
+
+        <button className="watched-btn" onClick={handleWatched}>
+          ✅ Mark as Watched
+        </button>
+
         <button
           className="compare-btn"
-          onClick={() => onCompare(movie)}
+          onClick={() => {
+           console.log("Compare clicked", movie); 
+            onCompare(movie)
+          }}
           disabled={isSelected}
         >
-          {isSelected ? "✅ Selected" : "🔄 Compare"}
+          🔄 Compare
         </button>
       </div>
     </div>

@@ -10,12 +10,14 @@ from app.models.movie import Movie
 from app.models.review import Review
 from app.models.favorite import Favorite
 
+
 # Routers
 from app.routers.auth import router as auth_router
 from app.routers.movies import router as movie_router
 from app.routers.favorites import router as favorite_router
 from app.routers.recommendations import router as recommendation_router
 from app.routers.notifications import router as notification_router
+
 
 # Create database tables
 Base.metadata.create_all(bind=engine)

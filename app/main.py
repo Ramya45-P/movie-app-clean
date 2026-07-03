@@ -10,9 +10,14 @@ from app.models.review import Review
 from app.models.favorite import Favorite
 from app.models.search_history import SearchHistory
 from app.models.notification import Notification
+from app.models.watched import Watched
+from app.models.watchlist import Watchlist
+
 
 # Routers
 from app.routers import auth, movies, favorites, recommendations, notifications
+from app.routers.watched import router as watched_router
+from app.routers.watchlist import router as watchlist_router
 
 app = FastAPI(
     title="Movie App API",
@@ -51,6 +56,8 @@ app.include_router(movies.router)
 app.include_router(favorites.router)
 app.include_router(recommendations.router)
 app.include_router(notifications.router)
+app.include_router(watched_router)
+app.include_router(watchlist_router)
 
 @app.get("/")
 def home():
