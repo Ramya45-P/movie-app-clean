@@ -22,7 +22,7 @@ export const addWatched = async (movie) => {
 };
 
 // Remove watched movie
-export const removeWatched = async (watchedId) => {
-  const res = await API.delete(`/watched/${watchedId}`);
+export const removeWatched = async (id) => {
+  const res = await API.delete(`/watched/${id}`);
   return res.data;
 };

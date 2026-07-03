@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import CompareMovies from "./pages/CompareMovies";
+import Watchlist from "./pages/Watchlist";
+import Watched from "./pages/Watched";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -24,6 +26,24 @@ function App() {
           element={
             <ProtectedRoute>
               <Favorites />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/watchlist"
+          element={
+            <ProtectedRoute>
+              <Watchlist />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/watched"
+          element={
+            <ProtectedRoute>
+              <Watched />
             </ProtectedRoute>
           }
         />
