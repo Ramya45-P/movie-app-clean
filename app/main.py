@@ -31,19 +31,18 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:3001",
-        "http://localhost:3004",
+        "http://localhost:3002",
+        "http://localhost:5173",
 
-        "https://movie-app-clean-5zbe.vercel.app",   # <-- ADD THIS
-
-        "https://movie-app-clean-0o52.onrender.com",
+        # ✅ IMPORTANT: add your CURRENT frontend URL
+        "https://movie-app-clean-0o52.vercel.app",
+        "https://movie-app-clean-5zbe.vercel.app",
         "https://movie-app-clean.vercel.app",
-        "https://movie-app-clean-git-master-ramya8.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 @app.on_event("startup")
 def startup():
     print("========== CREATING TABLES ==========")
