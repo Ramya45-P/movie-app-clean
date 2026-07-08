@@ -9,7 +9,7 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
       await addFavorite(movie);
       alert("Movie added to favorites!");
     } catch (err) {
-      console.log(err);
+      
       alert("Failed to add favorite");
     }
   };
@@ -19,7 +19,7 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
       await addWatchlist(movie);
       alert("Movie added to watchlist!");
     } catch (err) {
-      console.log(err);
+      
       alert("Failed to add to watchlist");
     }
   };
@@ -29,7 +29,7 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
       await addWatched(movie);
       alert("Movie marked as watched!");
     } catch (err) {
-      console.log(err);
+      
       alert("Failed to mark as watched");
     }
   };
@@ -72,7 +72,7 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
         <button
           className="compare-btn"
           onClick={() => {
-           console.log("Compare clicked", movie); 
+           
             onCompare(movie)
           }}
           disabled={isSelected}

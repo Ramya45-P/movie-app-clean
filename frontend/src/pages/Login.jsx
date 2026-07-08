@@ -25,66 +25,103 @@ function Login() {
 
       const response = await loginUser(email, password);
 
-      console.log("LOGIN RESPONSE:", response);
+      
 
-      // IMPORTANT: axios returns {data}
-    const token = response?.data?.access_token;
+      const token = response?.data?.access_token;
 
-console.log("TOKEN DEBUG:", token);
-console.log("FULL RESPONSE:", response);
+      
+      
 
-if (!token) {
-  console.log("Backend response issue:", response?.data);
-  throw new Error("Login failed: token missing");
-}
+      if (!token) {
+        throw new Error("Token missing from backend response");
+      }
 
-localStorage.setItem("token", token);
+      // Save JWT token
+      localStorage.setItem("token", token);
+
+      
 
       navigate("/");
 
     } catch (err) {
-      console.log("LOGIN ERROR:", err);
+      
 
-      const msg =
-        err.response?.data?.detail ||
-        err.response?.data?.message ||
-        "Login failed";
+      let msg = "Login failed";
+
+      if (typeof err.response?.data?.detail === "string") {
+        msg = err.response.data.detail;
+      } 
+      else if (Array.isArray(err.response?.data?.detail)) {
+        msg =
+          err.response.data.detail[0]?.msg ||
+          "Invalid input";
+      }
+      else if (err.response?.data?.message) {
+        msg = err.response.data.message;
+      }
 
       setError(msg);
+
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
-    <div style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
+    <div
+      style={{
+        padding: "20px",
+        maxWidth: "400px",
+        margin: "auto"
+      }}
+    >
       <h2>Login</h2>
 
       <form onSubmit={handleLogin}>
+
         <input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError("");
+          }}
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
         />
 
-        <br /><br />
+        <br />
+        <br />
 
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Logging in..." : "Login"}
         </button>
+
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {error && (
+        <p style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+
     </div>
   );
 }

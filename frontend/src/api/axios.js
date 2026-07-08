@@ -1,17 +1,13 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://movie-app-clean-0o52.onrender.com",
+  baseURL: "http://127.0.0.1:8000",
 });
 
-// Request interceptor
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
-  // Don't override Content-Type if it's already set
-  if (!config.headers["Content-Type"]) {
-    config.headers["Content-Type"] = "application/json";
-  }
+  
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -19,17 +15,5 @@ API.interceptors.request.use((config) => {
 
   return config;
 });
-
-// Response interceptor
-API.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
-);
 
 export default API;

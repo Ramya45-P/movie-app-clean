@@ -1,13 +1,15 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 from app.database.db import Base
+
 
 class Watchlist(Base):
     __tablename__ = "watchlist"
 
-    id = Column(Integer, primary_key=True, index=True)
-    movie_id = Column(String, index=True)
-    movie_title = Column(String)
-    poster = Column(String, nullable=True)
-    genre = Column(String)
-    rating = Column(String)
-    user_id = Column(Integer)
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"))
+
+    user = relationship("User", back_populates="watchlist")
+    movie = relationship("Movie", back_populates="watchlist")

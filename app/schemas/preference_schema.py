@@ -1,12 +1,13 @@
 from pydantic import BaseModel
 
-class WatchlistCreate(BaseModel):
-    movie_id: int
+
+class PreferenceCreate(BaseModel):
+    genre: str
 
 
-class WatchlistResponse(BaseModel):
+class PreferenceResponse(BaseModel):
     id: int
-    movie_id: int
+    genre: str
     user_id: int
 
     class Config:

@@ -8,6 +8,9 @@ from app.schemas.watchlist_schema import (
     WatchlistResponse,
 )
 
+from app.models.user import User
+from app.security import get_current_user
+
 router = APIRouter(
     prefix="/watchlist",
     tags=["Watchlist"]
@@ -25,46 +28,51 @@ def get_db():
 @router.post("/", response_model=WatchlistResponse)
 def add_watchlist(
     data: WatchlistCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
+
     existing = db.query(Watchlist).filter(
         Watchlist.movie_id == data.movie_id,
-        Watchlist.user_id == data.user_id
+        Watchlist.user_id == current_user.id
     ).first()
 
     if existing:
         return existing
 
-    movie = Watchlist(
+    watchlist = Watchlist(
         movie_id=data.movie_id,
-        movie_title=data.movie_title,
-        poster=data.poster,
-        genre=data.genre,
-        rating=data.rating,
-        user_id=data.user_id
+        user_id=current_user.id
     )
 
-    db.add(movie)
+    db.add(watchlist)
     db.commit()
-    db.refresh(movie)
+    db.refresh(watchlist)
 
-    return movie
+    return watchlist
 
 
 @router.get("/", response_model=list[WatchlistResponse])
 def get_watchlist(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
-    return db.query(Watchlist).all()
+
+    return db.query(Watchlist).filter(
+        Watchlist.user_id == current_user.id
+    ).all()
 
 
 @router.delete("/{watchlist_id}")
 def delete_watchlist(
     watchlist_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
+
     movie = db.query(Watchlist).filter(
-        Watchlist.id == watchlist_id
+        Watchlist.id == watchlist_id,
+        Watchlist.user_id == current_user.id
     ).first()
 
     if not movie:

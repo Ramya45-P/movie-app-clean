@@ -1,30 +1,29 @@
-from pydantic import BaseModel
-
+from pydantic import BaseModel, EmailStr
 
 # --------------------
-# CREATE USER (REGISTER)
+# REGISTER
 # --------------------
-class UserCreate(BaseModel):
+class RegisterRequest(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     password: str
 
 
 # --------------------
-# LOGIN USER
+# LOGIN
 # --------------------
 class LoginSchema(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
 # --------------------
-# RESPONSE (optional but good)
+# RESPONSE
 # --------------------
 class UserResponse(BaseModel):
     id: int
-    username: str
-    email: str
+    username: str | None = None
+    email: EmailStr
 
     class Config:
         from_attributes = True

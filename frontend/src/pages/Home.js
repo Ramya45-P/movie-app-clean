@@ -15,9 +15,9 @@ function Home() {
       try {
         const res = await API.get("/movies/");
         setMovies(res.data);
-        console.log(res.data);
+        
       } catch (err) {
-        console.log(err);
+        
       } finally {
         setLoading(false);
       }

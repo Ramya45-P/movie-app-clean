@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +9,6 @@ function Login() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { login } = useAuth(); // 👈 IMPORTANT
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,22 +24,33 @@ function Login() {
     try {
       const data = await loginUser(email, password);
 
-      console.log("FULL RESPONSE:", data);
-      console.log("TOKEN:", data.data?.access_token);
+      
 
-
-      // ✅ use context instead of localStorage
-      login(data.data.access_token);
-
-      console.log("Login successful");
-
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-
-      setError(
-        err.response?.data?.detail || "Login failed"
+      // Store JWT token
+      localStorage.setItem(
+        "token",
+        data.data.access_token
       );
+
+      
+      navigate("/");
+
+    } catch (err) {
+      
+
+      let message = "Login failed";
+
+      if (typeof err.response?.data?.detail === "string") {
+        message = err.response.data.detail;
+      } 
+      else if (Array.isArray(err.response?.data?.detail)) {
+        message =
+          err.response.data.detail[0]?.msg ||
+          "Invalid input";
+      }
+
+      setError(message);
+
     } finally {
       setLoading(false);
     }
@@ -52,6 +61,7 @@ function Login() {
       <h2>Login</h2>
 
       <form onSubmit={handleLogin}>
+
         <input
           type="email"
           placeholder="Email"
@@ -62,7 +72,8 @@ function Login() {
           }}
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         <input
           type="password"
@@ -74,7 +85,8 @@ function Login() {
           }}
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         <button
           type="submit"
@@ -82,11 +94,17 @@ function Login() {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+
       </form>
 
-      {error && (
-        <p style={{ color: "red" }}>{error}</p>
-      )}
+    {error && (
+  <p style={{ color: "red" }}>
+    {typeof error === "string"
+      ? error
+      : "Invalid email or password"}
+  </p>
+)}
+
     </div>
   );
 }

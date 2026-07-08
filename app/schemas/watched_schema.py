@@ -1,13 +1,14 @@
 from pydantic import BaseModel
 
-class WatchlistCreate(BaseModel):
+
+class WatchedCreate(BaseModel):
     movie_id: int
 
 
-class WatchlistResponse(BaseModel):
+class WatchedResponse(BaseModel):
     id: int
-    movie_id: int
     user_id: int
+    movie_id: int
 
     class Config:
         from_attributes = True

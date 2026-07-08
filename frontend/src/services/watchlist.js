@@ -9,12 +9,7 @@ export const getWatchlist = async () => {
 // Add movie to watchlist
 export const addWatchlist = async (movie) => {
   const res = await API.post("/watchlist/", {
-    movie_id: String(movie.id),
-    movie_title: movie.title,
-    poster: movie.poster || "",
-    genre: movie.genre,
-    rating: String(movie.rating),
-    user_id: 1,
+    movie_id: Number(movie.id),
   });
 
   return res.data;

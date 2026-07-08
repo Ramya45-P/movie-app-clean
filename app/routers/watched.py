@@ -4,11 +4,15 @@ from sqlalchemy.orm import Session
 from app.database.db import SessionLocal
 from app.models.watched import Watched
 from app.models.watchlist import Watchlist
+from app.models.user import User
 
-from app.schemas.favorite_schema import (
+from app.schemas.watched_schema import (
     WatchedCreate,
-    WatchedResponse,
+    WatchedResponse
 )
+
+from app.security import get_current_user
+
 
 router = APIRouter(
     prefix="/watched",
@@ -30,36 +34,31 @@ def get_db():
 @router.post("/", response_model=WatchedResponse)
 def add_watched(
     data: WatchedCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
-    # Check if already exists
+
     existing = db.query(Watched).filter(
         Watched.movie_id == data.movie_id,
-        Watched.user_id == data.user_id
+        Watched.user_id == current_user.id
     ).first()
 
     if existing:
         return existing
 
-    # Save watched movie
     watched = Watched(
         movie_id=data.movie_id,
-        movie_title=data.movie_title,
-        poster=data.poster,
-        genre=data.genre,
-        rating=data.rating,
-        watched_date=data.watched_date,
-        user_id=data.user_id
+        user_id=current_user.id
     )
 
     db.add(watched)
     db.commit()
     db.refresh(watched)
 
-    # Remove from watchlist if present
+    # Remove from watchlist
     watchlist_movie = db.query(Watchlist).filter(
         Watchlist.movie_id == data.movie_id,
-        Watchlist.user_id == data.user_id
+        Watchlist.user_id == current_user.id
     ).first()
 
     if watchlist_movie:
@@ -68,12 +67,19 @@ def add_watched(
 
     return watched
 
+
 # -------------------------
 # GET WATCHED MOVIES
 # -------------------------
 @router.get("/", response_model=list[WatchedResponse])
-def get_watched(db: Session = Depends(get_db)):
-    return db.query(Watched).all()
+def get_watched(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+
+    return db.query(Watched).filter(
+        Watched.user_id == current_user.id
+    ).all()
 
 
 # -------------------------
@@ -82,10 +88,13 @@ def get_watched(db: Session = Depends(get_db)):
 @router.delete("/{watched_id}")
 def delete_watched(
     watched_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
+
     watched = db.query(Watched).filter(
-        Watched.id == watched_id
+        Watched.id == watched_id,
+        Watched.user_id == current_user.id
     ).first()
 
     if not watched:

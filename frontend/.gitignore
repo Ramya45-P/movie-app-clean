@@ -26,6 +26,8 @@ frontend/dist/
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
 # misc
 .DS_Store

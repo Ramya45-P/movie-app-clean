@@ -1,14 +1,18 @@
 from pydantic import BaseModel
 
 
-class FavoriteCreate(BaseModel):
+class ReviewCreate(BaseModel):
     movie_id: int
+    rating: int
+    comment: str
 
 
-class FavoriteResponse(BaseModel):
+class ReviewResponse(BaseModel):
     id: int
     user_id: int
     movie_id: int
+    rating: int
+    comment: str
 
     class Config:
         from_attributes = True

@@ -12,7 +12,7 @@ function Favorites() {
       const data = await getFavorites();
       setFavorites(data);
     } catch (err) {
-      console.log(err);
+      
     }
   };
 
@@ -25,7 +25,7 @@ function Favorites() {
       await removeFavorite(id);
       loadFavorites();
     } catch (err) {
-      console.log(err);
+      
       alert("Failed to remove favorite");
     }
   };

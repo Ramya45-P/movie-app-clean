@@ -23,12 +23,14 @@ function Navbar() {
   <Link to="/">Home</Link>
 
   {token && (
-    <>
-      <Link to="/favorites">Favorites</Link>
-      <Link to="/watchlist">Watchlist</Link>
-      <Link to="/watched">Watched</Link>
-    </>
-  )}
+  <>
+   
+    <Link to="/favorites">Favorites</Link>
+    <Link to="/watchlist">Watchlist</Link>
+    <Link to="/watched">Watched</Link>
+    <Link to="/profile">Profile</Link>
+  </>
+)}
 </div>
 
       {/* Right side */}

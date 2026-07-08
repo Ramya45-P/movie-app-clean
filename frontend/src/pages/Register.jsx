@@ -9,20 +9,21 @@ function Register() {
   const [password, setPassword] = useState("");
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      await API.post(
-        `/auth/register?email=${email}&password=${password}`
-      );
+  try {
+    await API.post("/auth/register", {
+      email,
+      password
+    });
 
-      alert("Registration successful!");
-      navigate("/login");
-    } catch (err) {
-      console.log(err.response?.data || err.message);
-      alert("Registration failed");
-    }
-  };
+    alert("Registration successful!");
+    navigate("/login");
+  } catch (err) {
+    
+    alert("Registration failed");
+  }
+};
 
   return (
     <div className="auth-container">

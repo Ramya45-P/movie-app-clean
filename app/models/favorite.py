@@ -1,10 +1,14 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 from app.database.db import Base
+
 
 class Favorite(Base):
     __tablename__ = "favorites"
 
-    id = Column(Integer, primary_key=True, index=True)
-    movie_id = Column(String)
-    movie_title = Column(String)
-    genre = Column(String)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"))
+
+    user = relationship("User", back_populates="favorites")
+    movie = relationship("Movie", back_populates="favorites")

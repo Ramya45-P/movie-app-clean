@@ -6,16 +6,16 @@ export const getFavorites = async () => {
   return res.data;
 };
 
+
 // Add favorite
 export const addFavorite = async (movie) => {
   const res = await API.post("/favorites/", {
-    movie_id: String(movie.id),
-    movie_title: movie.title,
-    genre: movie.genre || "Unknown",
+    movie_id: movie.id,
   });
 
   return res.data;
 };
+
 
 // Delete favorite
 export const removeFavorite = async (favoriteId) => {

@@ -3,6 +3,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 import CompareMovies from "./pages/CompareMovies";
 import Watchlist from "./pages/Watchlist";
 import Watched from "./pages/Watched";
@@ -48,6 +49,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </>
   );
