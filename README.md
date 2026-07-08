@@ -14,6 +14,17 @@ This is a Movie Recommendation System built using React for the frontend and Fas
 - Favorites
 - Movie Recommendations
 - Notifications
+-## Implementation Summary
+
+* Implemented secure user authentication using JWT-based login and registration.
+* Developed Profile Management functionality to view and update user profile information.
+* Added Genre Preferences feature to personalize movie recommendations.
+* Integrated backend APIs using FastAPI with SQLAlchemy and SQLite.
+* Enhanced the React frontend with Profile and Genre Preferences pages.
+* Implemented movie management features including Favorites, Watchlist, Watched Movies, Reviews & Ratings, Movie Comparison, Recommendations, and Notifications.
+* Improved API integration, authentication flow, and user feedback with toast notifications.
+* Deployed the frontend on Vercel and the backend on Render with Swagger API documentation.
+ 
 
 ## Technologies Used
 
