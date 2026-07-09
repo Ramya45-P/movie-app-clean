@@ -6,3 +6,4 @@ from app.models.search_history import SearchHistory
 from app.models.notification import Notification
 from app.models.watched import Watched
 from app.models.watchlist import Watchlist
+from app.models.user_preference import UserPreference

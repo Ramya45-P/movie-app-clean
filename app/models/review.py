@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from app.database.db import Base
 
 
@@ -13,6 +14,9 @@ class Review(Base):
 
     rating = Column(Integer)
     comment = Column(String)
+
+    # NEW
+    created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", back_populates="reviews")
     movie = relationship("Movie", back_populates="reviews")

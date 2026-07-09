@@ -1,3 +1,6 @@
+
+
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,6 +22,7 @@ from app.routers import profile
 from app.routers.watched import router as watched_router
 from app.routers.watchlist import router as watchlist_router
 from app.routers.preferences import router as preferences_router
+from app.routers import dashboard
 
 app = FastAPI(
     title="Movie App API",
@@ -63,6 +67,8 @@ app.include_router(notifications.router)
 app.include_router(watched_router)
 app.include_router(watchlist_router)
 app.include_router(preferences_router)
+app.include_router(dashboard.router)
+
 
 # -------------------------
 # HOME

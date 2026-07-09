@@ -9,6 +9,7 @@ import Watchlist from "./pages/Watchlist";
 import Watched from "./pages/Watched";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -54,6 +55,15 @@ function App() {
   element={
     <ProtectedRoute>
       <Profile />
+    </ProtectedRoute>
+  }
+/>
+
+       <Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
     </ProtectedRoute>
   }
 />

@@ -1,3 +1,5 @@
+
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,6 +19,7 @@ from app.routers.movies import router as movie_router
 from app.routers.favorites import router as favorite_router
 from app.routers.recommendations import router as recommendation_router
 from app.routers.notifications import router as notification_router
+from app.routers.dashboard import router as dashboard_router
 
 
 # Create database tables
@@ -52,6 +55,7 @@ app.include_router(movie_router)
 app.include_router(favorite_router)
 app.include_router(recommendation_router)
 app.include_router(notification_router)
+app.include_router(dashboard_router)
 
 # ----------------------------
 # Home
