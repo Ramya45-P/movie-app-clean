@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
   getDashboardStats,
   getGenreStats,
@@ -6,7 +7,14 @@ import {
   getRecentActivity,
 } from "../services/dashboard";
 
+import StatsCards from "../components/dashboard/StatsCards";
+import GenreChart from "../components/dashboard/GenreChart";
+import MonthlyChart from "../components/dashboard/MonthlyChart";
+import RecentActivity from "../components/dashboard/RecentActivity";
+
+
 function Dashboard() {
+
   const [stats, setStats] = useState(null);
   const [genres, setGenres] = useState([]);
   const [monthly, setMonthly] = useState([]);
@@ -15,38 +23,51 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+
   useEffect(() => {
+
     const fetchDashboard = async () => {
+
       try {
+
         setLoading(true);
 
         const [
           statsData,
           genreData,
           monthlyData,
-          recentData,
+          recentData
         ] = await Promise.all([
           getDashboardStats(),
           getGenreStats(),
           getMonthlyActivity(),
-          getRecentActivity(),
+          getRecentActivity()
         ]);
+
 
         setStats(statsData);
         setGenres(genreData);
         setMonthly(monthlyData);
         setRecent(recentData);
 
+
       } catch (err) {
-        console.log(err);
-        setError("Failed to load dashboard data");
+  console.log("DASHBOARD ERROR:", err.response?.data || err.message);
+  setError("Failed to load dashboard data");
+
       } finally {
+
         setLoading(false);
+
       }
+
     };
 
+
     fetchDashboard();
+
   }, []);
+
 
 
   if (loading) {
@@ -59,28 +80,34 @@ function Dashboard() {
   }
 
 
+
   return (
-    <div>
+
+    <div className="dashboard-container">
+
       <h1>Dashboard</h1>
 
-      <pre>
-        {JSON.stringify(stats, null, 2)}
-      </pre>
 
-      <pre>
-        {JSON.stringify(genres, null, 2)}
-      </pre>
+      <StatsCards stats={stats} />
 
-      <pre>
-        {JSON.stringify(monthly, null, 2)}
-      </pre>
 
-      <pre>
-        {JSON.stringify(recent, null, 2)}
-      </pre>
+      <div className="charts-container">
+
+        <GenreChart data={genres} />
+
+        <MonthlyChart data={monthly} />
+
+      </div>
+
+
+      <RecentActivity data={recent} />
+
 
     </div>
+
   );
+
 }
+
 
 export default Dashboard;

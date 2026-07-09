@@ -59,61 +59,45 @@ app.add_middleware(
 # -------------------------
 # DATABASE CREATE + MIGRATION
 # -------------------------
-
+# -------------------------
+# CREATE TABLES + MIGRATIONS
+# -------------------------
 @app.on_event("startup")
 def startup():
-
     Base.metadata.create_all(bind=engine)
 
-   migrations = [
-    "ALTER TABLE watched ADD COLUMN watched_at DATETIME",
-    "ALTER TABLE favorites ADD COLUMN created_at DATETIME",
-    "ALTER TABLE reviews ADD COLUMN created_at DATETIME",
-    "ALTER TABLE search_history ADD COLUMN query TEXT",
-    "ALTER TABLE search_history ADD COLUMN created_at DATETIME",
-]
-    with engine.connect() as conn:
+    migrations = [
+        "ALTER TABLE watched ADD COLUMN watched_at DATETIME",
+        "ALTER TABLE favorites ADD COLUMN created_at DATETIME",
+        "ALTER TABLE reviews ADD COLUMN created_at DATETIME",
+        "ALTER TABLE search_history ADD COLUMN query TEXT",
+        "ALTER TABLE search_history ADD COLUMN created_at DATETIME",
+    ]
 
+    with engine.connect() as conn:
         for migration in migrations:
             try:
                 conn.execute(text(migration))
                 conn.commit()
-
-                print(
-                    "Migration applied:",
-                    migration
-                )
-
+                print("Migration applied:", migration)
             except Exception as e:
-                print(
-                    "Migration skipped:",
-                    e
-                )
-
+                print("Migration skipped:", migration)
 
 # -------------------------
 # ROUTES
 # -------------------------
 
 app.include_router(auth.router)
-
 app.include_router(profile.router)
-
 app.include_router(movies.router)
-
 app.include_router(favorites.router)
-
 app.include_router(recommendations.router)
-
 app.include_router(notifications.router)
 
 app.include_router(watched_router)
-
 app.include_router(watchlist_router)
-
 app.include_router(preferences_router)
 
-# Dashboard
 app.include_router(dashboard.router)
 
 

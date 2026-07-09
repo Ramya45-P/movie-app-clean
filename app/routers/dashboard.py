@@ -24,39 +24,39 @@ def get_dashboard_stats(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    print("===== DASHBOARD API CALLED =====")
-    print("USER ID:", current_user.id)
 
-    watched_count = db.query(Watched).filter(
-        Watched.user_id == current_user.id
-    ).count()
+    watched_count = (
+        db.query(Watched)
+        .filter(Watched.user_id == current_user.id)
+        .count()
+    )
 
-    favorites_count = db.query(Favorite).filter(
-        Favorite.user_id == current_user.id
-    ).count()
+    favorite_count = (
+        db.query(Favorite)
+        .filter(Favorite.user_id == current_user.id)
+        .count()
+    )
 
-    watchlist_count = db.query(Watchlist).filter(
-        Watchlist.user_id == current_user.id
-    ).count()
+    watchlist_count = (
+        db.query(Watchlist)
+        .filter(Watchlist.user_id == current_user.id)
+        .count()
+    )
 
-    reviews_count = db.query(Review).filter(
-        Review.user_id == current_user.id
-    ).count()
+    review_count = (
+        db.query(Review)
+        .filter(Review.user_id == current_user.id)
+        .count()
+    )
 
-    total_searches = db.query(SearchHistory).filter(
-        SearchHistory.user_id == current_user.id
-    ).count()
 
     return {
-        "watched_count": watched_count,
-        "favorites_count": favorites_count,
-        "watchlist_count": watchlist_count,
-        "reviews_count": reviews_count,
-        "collections_count": 0,
-        "total_searches": total_searches,
+        "watched": watched_count,
+        "favorites": favorite_count,
+        "watchlist": watchlist_count,
+        "reviews": review_count
     }
-
-
+    
 @router.get("/genres")
 def get_top_genres(
     db: Session = Depends(get_db),
