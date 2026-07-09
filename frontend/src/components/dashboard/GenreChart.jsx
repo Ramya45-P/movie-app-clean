@@ -1,8 +1,20 @@
+import "./Dashboard.css";
+
 function GenreChart({ data }) {
   return (
-    <div>
-      <h2>Genre Chart</h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+    <div className="dashboard-card">
+      <h2>Top Genres</h2>
+
+      {!data || data.length === 0 ? (
+        <p>No genre data available.</p>
+      ) : (
+        data.map((genre) => (
+          <div key={genre.genre} className="genre-row">
+            <span>{genre.genre}</span>
+            <strong>{genre.count}</strong>
+          </div>
+        ))
+      )}
     </div>
   );
 }

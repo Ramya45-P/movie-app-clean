@@ -1,36 +1,39 @@
+import { useToast } from "../context/ToastContext";
 import React from "react";
 import { addFavorite } from "../services/favorites";
 import { addWatchlist } from "../services/watchlist";
 import { addWatched } from "../services/watched";
 
 function MovieCard({ movie, onCompare, selectedMovies = [] }) {
+  const { showToast } = useToast();
+  
   const handleFavorite = async () => {
     try {
       await addFavorite(movie);
-      alert("Movie added to favorites!");
+      showToast("Movie added to favorites!", "success");
     } catch (err) {
       
-      alert("Failed to add favorite");
+      showToast("Failed to add favorite", "error");
     }
   };
 
   const handleWatchlist = async () => {
     try {
       await addWatchlist(movie);
-      alert("Movie added to watchlist!");
+      showToast("Movie added to watchlist!", "success");
     } catch (err) {
       
-      alert("Failed to add to watchlist");
+      showToast("Failed to add to watchlist", "error");
     }
   };
 
   const handleWatched = async () => {
     try {
       await addWatched(movie);
-      alert("Movie marked as watched!");
+      showToast("Movie marked as watched!", "success");
     } catch (err) {
       
-      alert("Failed to mark as watched");
+      showToast("Failed to mark as watched", "error");
     }
   };
 

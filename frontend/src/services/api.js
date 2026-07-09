@@ -1,14 +1,12 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL:  "https://movie-app-clean-0o52.onrender.com",
+const API = axios.create({
+  baseURL: "https://movie-app-clean-0o52.onrender.com",
 });
 
-api.interceptors.request.use(
+API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-
-    
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -16,9 +14,7 @@ api.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-export default api;
+export default API;

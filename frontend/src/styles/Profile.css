@@ -13,7 +13,7 @@
   border-radius: 12px;
 }
 
-.avatar {
+.profile-avatar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -22,8 +22,19 @@
   justify-content: center;
   align-items: center;
   font-size: 45px;
+  flex-shrink: 0;
+}
+.profile-info {
+  flex: 1;
 }
 
+.profile-info h2 {
+  margin-top: 0;
+}
+
+.profile-info p {
+  margin: 10px 0;
+}
 
 .stats-container {
   display: grid;

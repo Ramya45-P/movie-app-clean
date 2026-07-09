@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../api/axios";
+import { useToast } from "../context/ToastContext";
+import API from "../services/api";
 import MovieCard from "../components/MovieCard";
 
 function Home() {
+  const { showToast } = useToast();
+
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMovies, setSelectedMovies] = useState([]);
@@ -17,6 +20,7 @@ function Home() {
         setMovies(res.data);
         
       } catch (err) {
+        showToast("Failed to load movies", "error");
         
       } finally {
         setLoading(false);
@@ -24,16 +28,16 @@ function Home() {
     };
 
     fetchMovies();
-  }, []);
+  }, [showToast]);
 
   const handleCompare = (movie) => {
     if (selectedMovies.find((m) => m.id === movie.id)) {
-      alert("Movie already selected.");
+      showToast("Movie already exists.", "error");
       return;
     }
 
     if (selectedMovies.length >= 2) {
-      alert("You can compare only 2 movies.");
+      showToast("You can compare only 2 movies.", "error");
       return;
     }
 
@@ -42,7 +46,7 @@ function Home() {
 
   const compareNow = () => {
     if (selectedMovies.length !== 2) {
-      alert("Please select exactly 2 movies.");
+      showToast("Please select two movies.", "error");
       return;
     }
 

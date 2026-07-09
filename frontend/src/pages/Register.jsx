@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import API from "../api/axios";
+import API from "../services/api";
+import { useToast } from "../context/ToastContext";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate(); // ✅ FIXED
+  const { showToast } = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,11 +19,10 @@ function Register() {
       password
     });
 
-    alert("Registration successful!");
+    showToast("Registration successful!", "success");
     navigate("/login");
   } catch (err) {
-    
-    alert("Registration failed");
+    showToast("Registration failed", "error");
   }
 };
 

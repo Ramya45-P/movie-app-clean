@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useToast } from "../context/ToastContext";
 import {
   getFavorites,
   removeFavorite,
 } from "../services/favorites";
 
 function Favorites() {
+  const { showToast } = useToast();
+
   const [favorites, setFavorites] = useState([]);
 
-  const loadFavorites = async () => {
+  const loadFavorites = useCallback(async () => {
     try {
       const data = await getFavorites();
       setFavorites(data);
     } catch (err) {
-      
+      showToast("Failed to load favorites", "error");
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     loadFavorites();
-  }, []);
+  }, [loadFavorites]);
 
   const handleRemove = async (id) => {
     try {
@@ -26,7 +29,7 @@ function Favorites() {
       loadFavorites();
     } catch (err) {
       
-      alert("Failed to remove favorite");
+      showToast("Failed to remove favorite", "error");
     }
   };
 

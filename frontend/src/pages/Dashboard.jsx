@@ -93,14 +93,14 @@ function Dashboard() {
 
       <div className="charts-container">
 
-        <GenreChart data={genres} />
+       <GenreChart genres={genres} />
+       <MonthlyChart monthly={monthly} />
 
-        <MonthlyChart data={monthly} />
-
+       
       </div>
 
 
-      <RecentActivity data={recent} />
+       <RecentActivity recent={recent} />
 
 
     </div>

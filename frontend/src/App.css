@@ -18,3 +18,49 @@
   margin-top: 10px;
   cursor: pointer;
 }
+/* Navbar */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:#1e293b;
+    color:white;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.nav-links a:hover{
+    color:#38bdf8;
+}
+
+.login-btn,
+.logout-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.logout-btn:hover,
+.login-btn:hover{
+    background:#1d4ed8;
+}
