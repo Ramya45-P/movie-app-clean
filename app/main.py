@@ -65,12 +65,13 @@ def startup():
 
     Base.metadata.create_all(bind=engine)
 
-    migrations = [
-        "ALTER TABLE watched ADD COLUMN watched_at DATETIME",
-        "ALTER TABLE favorites ADD COLUMN created_at DATETIME",
-        "ALTER TABLE reviews ADD COLUMN created_at DATETIME",
-    ]
-
+   migrations = [
+    "ALTER TABLE watched ADD COLUMN watched_at DATETIME",
+    "ALTER TABLE favorites ADD COLUMN created_at DATETIME",
+    "ALTER TABLE reviews ADD COLUMN created_at DATETIME",
+    "ALTER TABLE search_history ADD COLUMN query TEXT",
+    "ALTER TABLE search_history ADD COLUMN created_at DATETIME",
+]
     with engine.connect() as conn:
 
         for migration in migrations:
