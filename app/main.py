@@ -1,6 +1,6 @@
 
 
-
+from sqlalchemy import text
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -51,9 +51,6 @@ app.add_middleware(
 # -------------------------
 # CREATE TABLES
 # -------------------------
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=engine)
 
 # -------------------------
 # ROUTES
@@ -76,3 +73,17 @@ app.include_router(dashboard.router)
 @app.get("/")
 def home():
     return {"message": "Movie API is running"}
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
+
+    with engine.connect() as conn:
+        try:
+            conn.execute(
+                text("ALTER TABLE watched ADD COLUMN watched_at DATETIME")
+            )
+            conn.commit()
+            print("watched_at column added")
+        except Exception as e:
+            print("Migration skipped:", e)   
