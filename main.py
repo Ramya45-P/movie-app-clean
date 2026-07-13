@@ -20,7 +20,7 @@ from app.routers.favorites import router as favorite_router
 from app.routers.recommendations import router as recommendation_router
 from app.routers.notifications import router as notification_router
 from app.routers.dashboard import router as dashboard_router
-
+from app.routers.collections import router as collections_router
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -56,6 +56,7 @@ app.include_router(favorite_router)
 app.include_router(recommendation_router)
 app.include_router(notification_router)
 app.include_router(dashboard_router)
+app.include_router(collections_router)
 
 # ----------------------------
 # Home

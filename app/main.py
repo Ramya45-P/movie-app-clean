@@ -5,15 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database.db import Base, engine
 
 # Models (IMPORTANT: register all models)
-from app.models.user import User
-from app.models.movie import Movie
-from app.models.favorite import Favorite
-from app.models.watched import Watched
-from app.models.watchlist import Watchlist
-from app.models.review import Review
-from app.models.notification import Notification
-from app.models.user_preference import UserPreference
-
+import app.models
 
 # Routers
 from app.routers import auth
@@ -23,6 +15,7 @@ from app.routers import recommendations
 from app.routers import notifications
 from app.routers import profile
 from app.routers import dashboard
+from app.routers import collections
 
 from app.routers.watched import router as watched_router
 from app.routers.watchlist import router as watchlist_router
@@ -99,6 +92,7 @@ app.include_router(watchlist_router)
 app.include_router(preferences_router)
 
 app.include_router(dashboard.router)
+app.include_router(collections.router)
 
 
 # -------------------------

@@ -7,3 +7,5 @@ from app.models.notification import Notification
 from app.models.watched import Watched
 from app.models.watchlist import Watchlist
 from app.models.user_preference import UserPreference
+from app.models.collection import Collection
+from app.models.collection_movie import CollectionMovie

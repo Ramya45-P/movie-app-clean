@@ -13,7 +13,7 @@ class Movie(Base):
     genre = Column(String)
     rating = Column(Integer)
 
-    # 🔥 ADD THESE (IMPORTANT FIX)
+   
 
     favorites = relationship("Favorite", back_populates="movie", cascade="all, delete-orphan")
 
@@ -22,3 +22,8 @@ class Movie(Base):
     watchlist = relationship("Watchlist", back_populates="movie", cascade="all, delete-orphan")
 
     reviews = relationship("Review", back_populates="movie", cascade="all, delete-orphan")
+    collection_movies = relationship(
+    "CollectionMovie",
+    back_populates="movie",
+    cascade="all, delete-orphan"
+)

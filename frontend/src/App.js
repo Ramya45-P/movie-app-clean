@@ -10,6 +10,8 @@ import Watched from "./pages/Watched";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
+import Collections from "./pages/Collections";
+import CollectionDetails from "./pages/CollectionDetails";
 
 function App() {
   return (
@@ -67,8 +69,28 @@ function App() {
     </ProtectedRoute>
   }
 />
+<Route
+  path="/collections"
+  element={
+    <ProtectedRoute>
+      <Collections />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+  path="/collections/:id"
+  element={
+    <ProtectedRoute>
+      <CollectionDetails />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </>
+
+    
   );
 }
 

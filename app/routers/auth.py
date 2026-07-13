@@ -93,7 +93,7 @@ def login(
         )
 
     token = create_access_token(
-        data={"sub": user.email}
+        data={"user_id": user.id}
     )
 
     return {
