@@ -1,4 +1,4 @@
-import API from "../api/axios";
+import API from "../api";
 
 export const getMovies = async () => {
   const res = await API.get("/movies/");

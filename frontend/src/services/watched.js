@@ -1,4 +1,4 @@
-import API from "../api/axios";
+import API from "../api";
 
 // Get watched movies
 export const getWatched = async () => {

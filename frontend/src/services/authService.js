@@ -1,4 +1,4 @@
-import API from "../api/axios";
+import API from "../api";
 
 export const loginUser = (email, password) => {
 

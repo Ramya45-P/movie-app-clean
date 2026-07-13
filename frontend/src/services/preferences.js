@@ -1,4 +1,4 @@
-import API from "../api/axios";
+import API from "../api";
 
 // Get all preferences
 export const getPreferences = async () => {

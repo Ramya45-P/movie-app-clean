@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import API from "../api/axios";
+import API from "../services/api";
 
 function CompareMovies() {
   const [searchParams] = useSearchParams();
