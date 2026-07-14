@@ -50,10 +50,7 @@ export const getCollectionDetails = async (id) => {
 
 
 // Add movie to collection
-export const addMovieToCollection = async (
-  collectionId,
-  movieId
-) => {
+export const addMovieToCollection = async (collectionId, movieId) => {
   const response = await api.post(
     `/collections/${collectionId}/movies`,
     {
@@ -63,8 +60,6 @@ export const addMovieToCollection = async (
 
   return response.data;
 };
-
-
 // Remove movie from collection
 export const removeMovieFromCollection = async (
   collectionId,

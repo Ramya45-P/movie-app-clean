@@ -27,8 +27,8 @@ function Favorites() {
     try {
       await removeFavorite(id);
       loadFavorites();
+      showToast("Favorite removed successfully", "success");
     } catch (err) {
-      
       showToast("Failed to remove favorite", "error");
     }
   };

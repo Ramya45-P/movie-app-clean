@@ -12,6 +12,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Collections from "./pages/Collections";
 import CollectionDetails from "./pages/CollectionDetails";
+import PublicCollections from "./pages/PublicCollections";
+import SearchCollections from "./pages/SearchCollections";
 
 function App() {
   return (
@@ -84,6 +86,24 @@ function App() {
   element={
     <ProtectedRoute>
       <CollectionDetails />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/public-collections"
+  element={
+    <ProtectedRoute>
+      <PublicCollections />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+  path="/search-collections"
+  element={
+    <ProtectedRoute>
+      <SearchCollections />
     </ProtectedRoute>
   }
 />

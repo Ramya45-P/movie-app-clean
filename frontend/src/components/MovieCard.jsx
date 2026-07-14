@@ -1,3 +1,4 @@
+import { getCollections, addMovieToCollection } from "../services/collections";
 import { useToast } from "../context/ToastContext";
 import React from "react";
 import { addFavorite } from "../services/favorites";
@@ -6,6 +7,8 @@ import { addWatched } from "../services/watched";
 
 function MovieCard({ movie, onCompare, selectedMovies = [] }) {
   const { showToast } = useToast();
+  const [collections, setCollections] = React.useState([]);
+  const [showCollections, setShowCollections] = React.useState(false);
   
   const handleFavorite = async () => {
     try {
@@ -36,6 +39,43 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
       showToast("Failed to mark as watched", "error");
     }
   };
+  const handleAddToCollection = async () => {
+  console.log("Button clicked");
+
+  try {
+    const data = await getCollections();
+
+    console.log("Collections:", data);
+
+    setCollections(data);
+    setShowCollections(true);
+
+  } catch (err) {
+    console.log("ERROR:", err);
+    console.log("Status:", err.response?.status);
+    console.log("Response:", err.response?.data);
+
+    showToast("Failed to load collections", "error");
+  }
+};
+
+  const handleSelectCollection = async (collectionId) => {
+  try {
+    await addMovieToCollection(collectionId, movie.id);
+
+    showToast("Movie added to collection!", "success");
+
+    setShowCollections(false);
+
+  } catch (err) {
+
+    showToast(
+      err.response?.data?.detail || "Failed to add movie",
+      "error"
+    );
+
+  }
+};
 
   const isSelected = selectedMovies.includes(movie.id);
 
@@ -68,6 +108,10 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
           ➕ Add to Watchlist
         </button>
 
+        <button className="btn btn-warning" onClick={handleAddToCollection}>
+          📂 Add to Collection
+        </button>
+
         <button className="watched-btn" onClick={handleWatched}>
           ✅ Mark as Watched
         </button>
@@ -83,6 +127,33 @@ function MovieCard({ movie, onCompare, selectedMovies = [] }) {
           🔄 Compare
         </button>
       </div>
+      {showCollections && (
+  <div className="mt-3">
+
+    <h6>Select Collection</h6>
+
+    {collections.length === 0 ? (
+
+      <p>No collections found.</p>
+
+    ) : (
+
+      collections.map((collection) => (
+
+        <button
+          key={collection.id}
+          className="btn btn-outline-primary btn-sm m-1"
+          onClick={() => handleSelectCollection(collection.id)}
+        >
+          {collection.name}
+        </button>
+
+      ))
+
+    )}
+
+  </div>
+)}
     </div>
   );
 }

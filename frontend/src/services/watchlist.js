@@ -1,4 +1,4 @@
-import API from "../api";
+import API from "../api/axios";
 
 // Get all watchlist movies
 export const getWatchlist = async () => {
