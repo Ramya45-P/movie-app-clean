@@ -49,3 +49,12 @@ This is a Movie Recommendation System built using React for the frontend and Fas
 ✅ Functional implementation completed.
 
 🚧 UI improvements are currently in progress.
+
+### Latest Update: Movie Collections & Public Sharing
+
+* Implemented Collection CRUD functionality
+* Added movie add/remove support inside collections
+* Added Public Collections and Search Collections features
+* Integrated frontend UI with backend APIs
+* Tested APIs using Swagger and verified responsive UI
+
