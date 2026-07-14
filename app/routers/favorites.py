@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
 
 from app.database.db import SessionLocal
 from app.models.favorite import Favorite
@@ -64,12 +65,9 @@ def get_favorites(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-
     return db.query(Favorite).filter(
         Favorite.user_id == current_user.id
     ).all()
-
-
 
 # DELETE FAVORITE
 @router.delete("/{favorite_id}")

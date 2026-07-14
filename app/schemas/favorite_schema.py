@@ -1,9 +1,7 @@
 from pydantic import BaseModel
 
-
 class FavoriteCreate(BaseModel):
     movie_id: int
-
 
 class FavoriteResponse(BaseModel):
     id: int

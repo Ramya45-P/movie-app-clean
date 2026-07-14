@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 from app.database.db import get_db
 from app.models.collection import Collection
@@ -195,38 +196,30 @@ def add_movie_to_collection(
         "message": "Movie added to collection successfully"
     }
 
-@router.get("/{collection_id}", response_model=CollectionDetailsResponse)
-def get_collection(
-    collection_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+
+
+# GET PUBLIC COLLECTIONS
+@router.get("/public")
+def get_public_collections(
+    db: Session = Depends(get_db)
 ):
+    collections = db.query(Collection).filter(
+        Collection.is_public == True
+    ).all()
 
-    collection = db.query(Collection).filter(
-        Collection.id == collection_id,
-        Collection.user_id == current_user.id
-    ).first()
+    result = []
 
-    if not collection:
-        raise HTTPException(
-            status_code=404,
-            detail="Collection not found"
-        )
+    for collection in collections:
+        result.append({
+    "id": collection.id,
+    "name": collection.name,
+    "owner": collection.owner.username,
+    "movie_count": len(collection.collection_movies),
+    "created_at": collection.created_at
+})
 
-    movies = []
+    return result
 
-    for item in collection.collection_movies:
-        movies.append(item.movie)
-
-    return {
-        "id": collection.id,
-        "name": collection.name,
-        "description": collection.description,
-        "is_public": collection.is_public,
-        "user_id": collection.user_id,
-        "created_at": collection.created_at,
-        "movies": movies,
-    }
 
 # REMOVE MOVIE FROM COLLECTION
 @router.delete("/{collection_id}/movies/{movie_id}")
@@ -264,4 +257,61 @@ def remove_movie_from_collection(
 
     return {
         "message": "Movie removed from collection successfully"
+    }
+@router.get("/search")
+def search_collections(
+    query: str,
+    db: Session = Depends(get_db)
+):
+    collections = db.query(Collection).join(Collection.owner).filter(
+        or_(
+            Collection.name.ilike(f"%{query}%"),
+            User.username.ilike(f"%{query}%")
+        )
+    ).all()
+
+    result = []
+
+    for collection in collections:
+        result.append({
+            "id": collection.id,
+            "name": collection.name,
+            "owner": collection.owner.username,
+            "movie_count": len(collection.collection_movies),
+            "created_at": collection.created_at,
+            "is_public": collection.is_public
+        })
+
+    return result
+
+@router.get("/{collection_id}", response_model=CollectionDetailsResponse)
+def get_collection(
+    collection_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    collection = db.query(Collection).filter(
+        Collection.id == collection_id,
+        Collection.user_id == current_user.id
+    ).first()
+
+    if not collection:
+        raise HTTPException(
+            status_code=404,
+            detail="Collection not found"
+        )
+
+    movies = []
+
+    for item in collection.collection_movies:
+        movies.append(item.movie)
+
+    return {
+        "id": collection.id,
+        "name": collection.name,
+        "description": collection.description,
+        "is_public": collection.is_public,
+        "user_id": collection.user_id,
+        "created_at": collection.created_at,
+        "movies": movies,
     }
